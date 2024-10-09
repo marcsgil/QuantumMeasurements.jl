@@ -1,0 +1,14 @@
+name = "QuantumMeasurements"
+uuid = "5d8d2b8f-00a2-4aa7-ae68-34a984b4e8b6"
+authors = ["Marcos Gil <marcosgildeoliveira@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+OnlineStats = "a15396b6-48d5-5d58-9928-6d29437db91e"
+PrecompileTools = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+
+[compat]
+OnlineStats = "1.7.1"
+PrecompileTools = "1.2.1"
