@@ -3,6 +3,7 @@ module QuantumMeasurements
 using LinearAlgebra, Random, OnlineStats
 import Base.rand
 import LinearAlgebra.isposdef!
+using Base.Threads: @spawn
 
 include("gell_mann_matrices.jl")
 export GellMannMatrices
@@ -20,7 +21,8 @@ export fidelity, project2density!, project2density, project2pure, polarization_s
 
 include("measurement.jl")
 export get_traceless_part, get_trace_part, get_dim, get_num_outcomes, get_measurement_type,
-    assemble_measurement_matrix, get_probabilities!, get_probabilities, fisher, empty_measurement, update_measurement!
+    assemble_measurement_matrix, get_probabilities!, get_probabilities, fisher, empty_measurement,
+    update_measurement!, multithreaded_update_measurement!, filter_measurement
 
 include("proportional_measurement.jl")
 export ProportionalMeasurement

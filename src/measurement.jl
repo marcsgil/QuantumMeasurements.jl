@@ -74,17 +74,33 @@ function empty_measurement(num_outcomes, dim, ::Type{T}) where {T<:AbstractMatri
     T(undef, num_outcomes, dim^2)
 end
 
-function update_measurement!(μ::AbstractArray, itr)
+function update_measurement!(μ::AbstractMatrix, itr)
     for (row, Π) ∈ zip(eachrow(μ), itr)
         vectorization!(row, Π)
     end
 end
 
-function update_measurement!(μ::AbstractArray, buffer, itr, pars, f!)
+function update_measurement!(μ::AbstractMatrix, buffer, itr, pars, f!)
     for (row, r) ∈ zip(eachrow(μ), itr)
         f!(buffer, r, pars)
         vectorization!(row, buffer)
     end
+end
+
+function multithreaded_update_measurement!(μ::AbstractMatrix, buffers, itr, pars, f!)
+    num_buffers = size(buffers, ndims(buffers))
+    chunk_size = cld(length(itr), num_buffers)
+
+    idxs_chunks = Iterators.partition(axes(μ, 1), chunk_size)
+    buffers_chunks = eachslice(buffers, dims=ndims(buffers))
+    itr_chunks = Iterators.partition(itr, chunk_size)
+
+    tasks = map(zip(idxs_chunks, buffers_chunks, itr_chunks)) do (idxs, buffer, itr)
+        @spawn update_measurement!(view(μ, idxs, :), buffer, itr, pars, f!)
+    end
+
+    fetch.(tasks)
+    nothing
 end
 
 ### The interface ends here
@@ -112,10 +128,9 @@ function assemble_measurement_matrix(itr)
 end
 
 function fisher(μ::AbstractMatrix, θs)
-    d = get_dim(μ)^2 - 1
-    F = Matrix{eltype(θs)}(undef, d, d)
     inv_probs = get_probabilities(μ, θs)
-    broadcast!(inv, probs, probs)
-    D = diagm(inv_probs)
+    broadcast!(inv, inv_probs, inv_probs)
+    D = Diagonal(inv_probs)
+    T = get_traceless_part(μ)
     T' * D * T
 end

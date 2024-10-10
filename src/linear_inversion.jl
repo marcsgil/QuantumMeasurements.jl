@@ -62,7 +62,7 @@ end
 function estimate_state(freqs::Vector, μ, method::NormalEquations)
     traceless_part = get_traceless_part(μ)
     mul!(method.TdagT, traceless_part', traceless_part)
-    mul!(method.Tdagq, traceless_part', freqs .- get_trace_part(μ))
+    mul!(method.Tdagq, traceless_part', freqs .- get_trace_part(μ) ./ √get_dim(μ))
     θs = method.TdagT \ method.Tdagq
     ρ = density_matrix_reconstruction(θs)
     project2density!(ρ)
