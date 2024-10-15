@@ -1,6 +1,6 @@
 module QuantumMeasurements
 
-using LinearAlgebra, Random, OnlineStats
+using LinearAlgebra, Random, OnlineStats, Distributions
 import Base.rand
 import LinearAlgebra.isposdef!
 using Base.Threads: @spawn
@@ -17,7 +17,8 @@ export traceless_vectorization!, traceless_vectorization, traceless_reconstructi
     vectorization!, vectorization, reconstruction!, reconstruction
 
 include("misc.jl")
-export fidelity, project2density!, project2density, project2pure, polarization_state, get_noisy_probabilities
+export fidelity, project2density!, project2density, project2pure, polarization_state,
+    get_noisy_probabilities, simulate_outcomes
 
 include("measurement.jl")
 export get_traceless_part, get_trace_part, get_dim, get_num_outcomes, get_measurement_type,

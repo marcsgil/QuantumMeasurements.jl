@@ -5,7 +5,7 @@ struct LinearInversion <: AbstractLinearInversion end
 function estimate_state(freqs::AbstractVector{<:AbstractFloat}, μ, ::LinearInversion)
     q = freqs .- get_trace_part(μ) ./ √get_dim(μ)
 
-    θ = get_traceless_part(μ) \ q
+    θ = get_traceless_part(μ) \ q |> Array
     ρ = density_matrix_reconstruction(θ)
     project2density!(ρ)
     traceless_vectorization!(θ, ρ)
@@ -39,6 +39,7 @@ function estimate_state(freqs::AbstractVector{<:AbstractFloat}, μ, mthd::PreAll
     T = eltype(θs)
     copy!(θs, mthd.θ_correction)
     mul!(θs, mthd.pseudo_inv, freqs, one(T), -one(T) / √get_dim(μ))
+    θs = Array(θs)
 
     ρ = density_matrix_reconstruction(θs)
     project2density!(ρ)
@@ -59,11 +60,11 @@ function NormalEquations(μ)
     NormalEquations{typeof(TdagT),typeof(Tdagq)}(TdagT, Tdagq)
 end
 
-function estimate_state(freqs::Vector, μ, method::NormalEquations)
+function estimate_state(freqs::AbstractVector{<:AbstractFloat}, μ, method::NormalEquations)
     traceless_part = get_traceless_part(μ)
     mul!(method.TdagT, traceless_part', traceless_part)
     mul!(method.Tdagq, traceless_part', freqs .- get_trace_part(μ) ./ √get_dim(μ))
-    θs = method.TdagT \ method.Tdagq
+    θs = method.TdagT \ method.Tdagq |> Array
     ρ = density_matrix_reconstruction(θs)
     project2density!(ρ)
     post_estimation_routine!(ρ, θs, μ)

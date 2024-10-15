@@ -39,7 +39,7 @@ end
 
 filter_measurement(μ::ProportionalMeasurement, J) = μ.measurement_matrix[J, :]
 
-_transform(::AbstractMatrix) = identity
+_transform(ρ::AbstractMatrix) = ρ
 _transform(ψ::AbstractVector) = ψ * ψ'
 
 function ProportionalMeasurement(itr)

@@ -118,3 +118,19 @@ function LinearAlgebra.isposdef!(ρ, θ)
     density_matrix_reconstruction!(ρ, θ)
     isposdef!(ρ)
 end
+
+function simulate_outcomes(rng, state, measurement, N; atol=1e-4)
+    probs = get_probabilities(measurement, traceless_vectorization(state))
+    s = sum(probs)
+
+    @assert isapprox(s, 1; atol) """\n The probabilities do not sum to 1, but to $s.
+        If you believe this is due to numerical errors, you can try to increase the `atol` parameter.
+        """
+
+    normalize!(probs, 1)
+    rand(rng, Multinomial(N, probs))
+end
+
+function simulate_outcomes(state, measurement, N; atol=1e-4)
+    simulate_outcomes(Random.default_rng(), state, measurement, N; atol)
+end
