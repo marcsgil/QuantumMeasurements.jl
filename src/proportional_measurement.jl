@@ -39,7 +39,7 @@ end
 
 filter_measurement(μ::ProportionalMeasurement, J) = μ.measurement_matrix[J, :]
 
-_transform(::AbstractMatrix) = identity
+_transform(ρ::AbstractMatrix) = ρ
 _transform(ψ::AbstractVector) = ψ * ψ'
 
 function ProportionalMeasurement(itr)
@@ -94,14 +94,10 @@ function fisher(μ::ProportionalMeasurement, θs)
     kraus_transformation!(σ, A)
     N = real(tr(σ))
 
-    D = get_dim(μ)^2 - 1
-    J = Matrix{eltype(θs)}(undef, D, D)
-
     ωs = GellMannMatrices(get_dim(μ), eltype(σ))
     Ωs = [kraus_transformation!(ω, A) for ω ∈ ωs]
 
     J = [real(tr(Ω * ω) / N - tr(σ * ω) * tr(Ω) / N^2) for ω ∈ ωs, Ω ∈ Ωs]
 
-    get_probabilities!(probabilities, μ, θs)
-    J' * fisher(μ, probabilities) * J
+    J' * fisher(μ.measurement_matrix, traceless_vectorization(σ)) * J
 end
