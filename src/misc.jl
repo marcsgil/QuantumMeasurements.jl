@@ -1,10 +1,9 @@
 """
-    fidelity(ρ::AbstractMatrix, σ::AbstractMatrix)
-    fidelity(ψ::AbstractVector, φ::AbstractVector)
+    fidelity(ρ, σ)
 
 Calculate the fidelity between two quantum states.
 
-The states can be pure or mixed, and they are represented by vectors `ψ` and `φ` or density matrices `ρ` and `σ`, respectively.
+Either state can be pure or mixed, and represented by vectors or matrices, respectively.
 """
 function fidelity(ρ::AbstractMatrix, σ::AbstractMatrix)
     abs2(tr(sqrt(ρ * σ)))
@@ -119,12 +118,22 @@ function LinearAlgebra.isposdef!(ρ, θ)
     isposdef!(ρ)
 end
 
+"""
+    simulate_outcomes([rng,] state, measurement, N; atol=1e-4)
+
+Simulate the outcomes of a measurement `measurement` on a state `state` `N` times.
+The `rng` parameter is a random number generator.
+`state` can be either a vector, describing a pure state, or a matrix, describing a mixed state.
+`atol` is the absolute tolerance for the sum of the probabilities to be 1. 
+If the tolerance is not met, an error is thrown, which probably means that there is something wrong with the provided state or measurement.
+"""
 function simulate_outcomes(rng, state, measurement, N; atol=1e-4)
     probs = get_probabilities(measurement, traceless_vectorization(state))
     s = sum(probs)
 
     @assert isapprox(s, 1; atol) """\n The probabilities do not sum to 1, but to $s.
         If you believe this is due to numerical errors, you can try to increase the `atol` parameter.
+        Otherwise, there might be something wrong with the provided state or measurement.
         """
 
     normalize!(probs, 1)
@@ -133,4 +142,31 @@ end
 
 function simulate_outcomes(state, measurement, N; atol=1e-4)
     simulate_outcomes(Random.default_rng(), state, measurement, N; atol)
+end
+
+"""
+    fisher(μ, θs)
+
+Returns the Fisher information matrix for the measurement `μ` and the state decribed by a Bloch vector `θs`.
+"""
+function fisher(μ::AbstractMatrix, θs)
+    inv_probs = get_probabilities(μ, θs)
+    broadcast!(inv, inv_probs, inv_probs)
+    D = Diagonal(inv_probs)
+    T = get_traceless_part(μ)
+    T' * D * T
+end
+
+function fisher(μ::ProportionalMeasurement, θs)
+    σ = density_matrix_reconstruction(θs)
+    A = μ.kraus_operator
+    kraus_transformation!(σ, A)
+    N = real(tr(σ))
+
+    ωs = GellMannMatrices(get_dim(μ), eltype(σ))
+    Ωs = [kraus_transformation!(ω, A) for ω ∈ ωs]
+
+    J = [real(tr(Ω * ω) / N - tr(σ * ω) * tr(Ω) / N^2) for ω ∈ ωs, Ω ∈ Ωs]
+
+    J' * fisher(μ.measurement_matrix, traceless_vectorization(σ)) * J
 end

@@ -42,6 +42,14 @@ filter_measurement(μ::ProportionalMeasurement, J) = μ.measurement_matrix[J, :]
 _transform(ρ::AbstractMatrix) = ρ
 _transform(ψ::AbstractVector) = ψ * ψ'
 
+"""
+    ProportionalMeasurement(itr)
+
+Constructs a proportional measurement from the iterator `itr`.
+
+This measurement is proportional in the sense that, given Given `μ = assemble_measurement_matrix(itr)` 
+and a Bloch vector `θ`, the probabilities of the outcomes are proportional to `μ.measurement_matrix * θ`
+"""
 function ProportionalMeasurement(itr)
     measurement_sum = sum(_transform, itr)
     kraus_operator = cholesky(measurement_sum).U
@@ -86,18 +94,4 @@ function get_probabilities!(dest, μ::ProportionalMeasurement, θ)
     post_measurement_state!(ρ, μ.kraus_operator)
     traceless_vectorization!(θ, ρ)
     get_probabilities!(dest, μ.measurement_matrix, θ)
-end
-
-function fisher(μ::ProportionalMeasurement, θs)
-    σ = density_matrix_reconstruction(θs)
-    A = μ.kraus_operator
-    kraus_transformation!(σ, A)
-    N = real(tr(σ))
-
-    ωs = GellMannMatrices(get_dim(μ), eltype(σ))
-    Ωs = [kraus_transformation!(ω, A) for ω ∈ ωs]
-
-    J = [real(tr(Ω * ω) / N - tr(σ * ω) * tr(Ω) / N^2) for ω ∈ ωs, Ω ∈ Ωs]
-
-    J' * fisher(μ.measurement_matrix, traceless_vectorization(σ)) * J
 end

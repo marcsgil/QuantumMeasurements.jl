@@ -172,44 +172,14 @@ function sample_markov_chain(ℓπ_function!, θ₀::Vector{T}, nsamples, nwarm;
 end
 
 """
-    BayesianInference(povm::AbstractArray{Matrix{T}},
-        basis=gell_mann_matrices(size(first(povm), 1), complex(T))) where {T}
+    BayesianInference
 
-Create a Bayesian inference object from a POVM.
+Create a Bayesian inference instance.
 
-This is passed to the [`prediction`](@ref) method in order to perform the Bayesian inference.
+This method is passed to the [`estimate_state`](@ref) method in order to perform quantum state tomography.
 """
 struct BayesianInference end
 
-"""
-    prediction(outcomes, method::BayesianInference{T1, T2};
-        verbose=false,
-        σ=T1(1e-2),
-        log_prior=θ -> zero(T1),
-        θ₀=maximally_mixed_state(Int(√size(method.povm, 2)), T1),
-        nsamples=10^4,
-        nwarm=10^3,
-        chain=nothing) where {T1}
-
-Perform a Bayesian inference on the given `outcomes` using the [`BayesianInference`](@ref) `method`.
-
-# Arguments
-
-- `outcomes`: The outcomes of the experiment.
-- `method::BayesianInference{T1, T2}`: The Bayesian inference method.
-- `verbose=false`: Print information about the run.
-- `σ=T(1e-2)`: The initial standard deviation of the proposal distribution.
-- `log_prior=θ -> zero(T)`: The log-prior function.
-- `θ₀=maximally_mixed_state(Int(√size(method.povm, 2)), T)`: The initial state of the chain.
-- `nsamples=10^4`: The number of samples to take.
-- `nwarm=10^3`: The number of warm-up samples to take.
-- `chain=nothing`: If not `nothing`, store the chain in this matrix.
-
-# Returns
-
-A tuple with the mean state, its projection in `method.basis` and the covariance matrix.
-The mean state is already returned in matrix form.
-"""
 function estimate_state(outcomes, μ, ::BayesianInference;
     verbose=false,
     σ=get_measurement_type(μ)(1e-2),

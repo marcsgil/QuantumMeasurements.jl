@@ -1,3 +1,8 @@
+"""
+    MaximumLikelihood
+
+A type used to specify the maximum likelihood estimation method.
+"""
 struct MaximumLikelihood end
 
 function log_likelihood!(∇ℓπ, buffer1, buffer2, frequencies, μ, y, x)

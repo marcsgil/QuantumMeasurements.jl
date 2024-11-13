@@ -68,12 +68,32 @@ function get_probabilities!(dest, μ::AbstractMatrix, θ)
     mul!(dest, traceless_part, θ, one(T), convert(T, 1 / √dim))
 end
 
+"""
+    filter_measurement(μ, J)
+
+Filters the measurement `μ` so that only the outcomes `J` are represented.
+"""
 filter_measurement(μ::AbstractMatrix, J) = μ[J, :]
 
+"""
+    empty_measurement(num_outcomes, dim, T)
+
+Returns an empty measurement matrix with `num_outcomes` outcomes and dimension `dim`.
+
+The type T should be either an `AbstractMatrix` or a `ProportionalMeasurement`(@ref).
+"""
 function empty_measurement(num_outcomes, dim, ::Type{T}) where {T<:AbstractMatrix}
     T(undef, num_outcomes, dim^2)
 end
 
+"""
+    update_measurement!(μ, itr)
+    update_measurement!(μ::AbstractMatrix, buffer, itr, pars, f!)
+
+Updates the measurement `μ` with an iterator `itr`.
+The second sigature is used when the measurement is updated with a buffer and a function `f!`, which is used to update the buffer.
+f! should have the signature `f!(buffer, pars)`.
+"""
 function update_measurement!(μ::AbstractMatrix, itr)
     for (row, Π) ∈ zip(eachrow(μ), itr)
         vectorization!(row, Π)
@@ -87,6 +107,11 @@ function update_measurement!(μ::AbstractMatrix, buffer, itr, pars, f!)
     end
 end
 
+"""
+    multithreaded_update_measurement!(μ, buffers, itr, pars, f!)
+
+Same as `update_measurement!`(@ref), but uses multithreading.
+"""
 function multithreaded_update_measurement!(μ::AbstractMatrix, buffers, itr, pars, f!)
     num_buffers = size(buffers, ndims(buffers))
     chunk_size = cld(length(itr), num_buffers)
@@ -122,15 +147,8 @@ Assembles a measurement matrix from an iterator `itr`.
 Each row of the matrix is a vectorization of the corresponding element of `itr`.
 `vectorization` is implemented when the element of `itr` is a matrix or a vector, representing a
 Positive Operator Valued Measure (POVM) or a Projection Valued Measure (PVM) respectively.
+Given `μ = assemble_measurement_matrix(itr)` and a Bloch vector `θ`, the probabilities of the outcomes are calculated by `μ * θ`
 """
 function assemble_measurement_matrix(itr)
     hcat((vectorization(Π) for Π ∈ itr)...)'
-end
-
-function fisher(μ::AbstractMatrix, θs)
-    inv_probs = get_probabilities(μ, θs)
-    broadcast!(inv, inv_probs, inv_probs)
-    D = Diagonal(inv_probs)
-    T = get_traceless_part(μ)
-    T' * D * T
 end

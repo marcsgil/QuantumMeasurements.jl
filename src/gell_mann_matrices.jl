@@ -12,7 +12,7 @@ end
 """
     GellMannMatrices(dim, ::Type{T}=ComplexF32) where {T<:Complex}
 
-Generate the generalized Gell-Mann matrices of dimension `dim` with elements of type `T`.
+Iterator over the generalized Gell-Mann matrices of dimension `dim` with elements of type `T`.
 """
 struct GellMannMatrices{T<:Complex}
     dim::Int

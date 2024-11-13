@@ -1,9 +1,11 @@
+abstract type QuantumMeasurementRandom end
+
 """
     HaarUnitary(dim::Int)
 
 A type representing a Haar-random unitary matrix of dimension `dim`.
 """
-struct HaarUnitary
+struct HaarUnitary <: QuantumMeasurementRandom
     dim::Int
 end
 
@@ -34,7 +36,7 @@ end
 
 A type representing a Haar-random unitary vector of dimension `dim`.
 """
-struct HaarVector
+struct HaarVector  <: QuantumMeasurementRandom
     dim::Int
 end
 
@@ -47,7 +49,7 @@ end
 
 A type representing a random point on the simplex embeded in a space of dimension `dim`.
 """
-struct Simplex
+struct Simplex  <: QuantumMeasurementRandom
     dim::Int
 end
 
@@ -81,7 +83,7 @@ end
 A type representing a measure on the density states.
 It is a product Haar measure on the unitary group and a uniform (Lebesgue) measure on the simplex.
 """
-struct ProductMeasure
+struct ProductMeasure  <: QuantumMeasurementRandom
     dim::Int
 end
 
@@ -98,7 +100,7 @@ end
 
 A type representing a Ginibre ensamble of complex matrices of dimension `dim`.
 """
-struct GinibreEnsamble
+struct GinibreEnsamble  <: QuantumMeasurementRandom
     dim::Int
 end
 
@@ -113,18 +115,16 @@ function Base.rand(rng::AbstractRNG, type::GinibreEnsamble, n_samples::Integer)
     ρs
 end
 
-const _QuantumMeasurementRandoms = Union{HaarUnitary,HaarVector,Simplex,ProductMeasure,GinibreEnsamble}
-
-function Base.rand(type::_QuantumMeasurementRandoms, n_samples::Integer)
+function Base.rand(type::QuantumMeasurementRandom, n_samples::Integer)
     rand(Random.default_rng(), type, n_samples)
 end
 
-function Base.rand(rng, type::_QuantumMeasurementRandoms)
+function Base.rand(rng, type::QuantumMeasurementRandom)
     s = rand(rng, type, 1)
     dropdims(s, dims=ndims(s))
 end
 
-function Base.rand(type::_QuantumMeasurementRandoms)
+function Base.rand(type::QuantumMeasurementRandom)
     s = rand(type, 1)
     dropdims(s, dims=ndims(s))
 end
