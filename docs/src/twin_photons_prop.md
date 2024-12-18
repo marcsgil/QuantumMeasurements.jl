@@ -63,7 +63,7 @@ To deal with this kind of situation, we can build a [`ProportionalMeasurement`](
 μ = ProportionalMeasurement(projectors)
 ````
 
-The theory behind this is better explained at [Proportional Measurements](@ref prop_meas)
+The theory behind this is better explained at [Proportional Measurements](@ref prop_meas).
 
 From now on, everything follows the standard procedure.
 
