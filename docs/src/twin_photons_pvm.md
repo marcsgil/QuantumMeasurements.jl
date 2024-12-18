@@ -2,7 +2,7 @@
 EditURL = "../../examples/twin_photons_pvm.jl"
 ```
 
-# Twin Photons Polarization Tomography
+# Twin Photons
 In this example, we perform the tomography of the polarization state of a pair of twin photons.
 The photons are generated from SPDC and are entangled in polarization.
 

@@ -47,7 +47,7 @@ _transform(ψ::AbstractVector) = ψ * ψ'
 
 Constructs a proportional measurement from the iterator `itr`.
 
-This measurement is proportional in the sense that, given Given `μ = assemble_measurement_matrix(itr)` 
+This measurement is proportional in the sense that, given Given `μ = ProportionalMeasurement(itr)` 
 and a Bloch vector `θ`, the probabilities of the outcomes are proportional to `μ.measurement_matrix * θ`
 """
 function ProportionalMeasurement(itr)

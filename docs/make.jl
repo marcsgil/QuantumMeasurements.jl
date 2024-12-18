@@ -1,4 +1,4 @@
-using Documenter, DocumenterVitepress, Literate
+using Documenter, DocumenterVitepress, Literate, DocumenterCitations
 
 using QuantumMeasurements
 
@@ -11,22 +11,25 @@ for file ∈ readdir(joinpath(dir, "examples"), join=true)
     end
 end
 
+bib = CitationBibliography(joinpath(@__DIR__, "src", "refs.bib"))
+
 makedocs(;
     modules=[QuantumMeasurements],
     authors="Marcos Gil",
     repo,
     sitename="QuantumMeasurements.jl",
-    format=DocumenterVitepress.MarkdownVitepress(
-        repo="https://github.com/marcsgil/QuantumMeasurements.jl",
+    format=DocumenterVitepress.MarkdownVitepress(;
+        repo,
     ),
     pages=[
-        "QuantumMeasurements.jl" => "index.md",
+        "Home" => "index.md",
         "Quick-Start" => "quick_start.md",
-        "Explanations" => "explanation.md",
-        "Examples" => ["twin_photons_pvm.md"],
+        "Explanations" => ["mathematical_foundations.md", "proportional_measurements.md"],
+        "Examples" => ["twin_photons_pvm.md", "twin_photons_prop.md"],
         "API" => "api.md",
     ],
     warnonly=true,
+    plugins=[bib]
 )
 
 deploydocs(;
