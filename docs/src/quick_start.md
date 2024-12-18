@@ -25,12 +25,12 @@ right circular (R) and left circular (L) polarization states. This is run by cal
 measurement_basis = [polarization_state(s) / √3 for s ∈ (:H, :V, :D, :A, :R, :L)]
 ````
 
-The `polarization_state` function returns the polarization state corresponding to the symbol `s`.
+The [`polarization_state`](@ref) function returns the polarization state corresponding to the symbol `s`.
 These are simply two dimensional complex vectors representing the polarization states.
 We normalize these states by a factor of `√3` to ensure that our set forms a Projective Valued Measure (PVM).
 For more information on this, check the [Explanation](explanation.md) section of the documentation.
 
-We then assemble a measurement matrix corresponding to this basis by calling
+We then assemble a measurement matrix corresponding to this basis by calling [`assemble_measurement_matrix`](@ref):
 
 ````@example quick_start
 μ = assemble_measurement_matrix(measurement_basis)
@@ -57,20 +57,20 @@ Now that we have specified our measurement and the experimental outcomes,
 we can proceed to perform the quantum state tomography.
 
 First, we choose a tomography method. In this tutorial, we will use the simplest one,
-the linear inversion method. We create an instance of this method:
+the [`LinearInversion`](@ref). We create an instance of this method:
 
 ````@example quick_start
 method = LinearInversion()
 ````
 
-Finally, we call `estimate_state` to get an estimate of the state:
+Finally, we call [`estimate_state`](@ref) to get an estimate of the state:
 
 ````@example quick_start
 ρ = estimate_state(outcomes, μ, method)[1]
 ````
 
 The output of this code is the estimated density operator $\rho$ that produced the experimental outcomes.
-We index the output with `[1]` because the function `estimate_state` returns a tuple
+We index the output with `[1]` because the function [`estimate_state`](@ref) returns a tuple
 with the estimated state and the corresponding Bloch vector. In this case, we are only interested in the estimated state.
 
 ---

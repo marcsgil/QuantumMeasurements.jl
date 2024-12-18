@@ -1,4 +1,4 @@
-using LinearAlgebra, BayesianTomography
+"""using LinearAlgebra, BayesianTomography
 
 H = [1, 0.0im]
 V = [0.0im, 1]
@@ -70,4 +70,4 @@ BayesianTomography.log_likelihood!(buffer, frequencies, problem.traceless_part, 
     prediction(frequencies, method)
 end
 
-@benchmark prediction($frequencies, $method)
+@benchmark prediction($frequencies, $method)"""
