@@ -1,7 +1,9 @@
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+DocumenterCitations = "daee34ce-89f3-4625-b898-19384cb65244"
 DocumenterVitepress = "4710194d-e776-4893-9690-8d956a29c365"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 QuantumMeasurements = "5d8d2b8f-00a2-4aa7-ae68-34a984b4e8b6"
-DocumenterCitations = "daee34ce-89f3-4625-b898-19384cb65244"
+StructuredLight = "13204c95-a6e5-4c09-8c7b-ee09b09e0944"

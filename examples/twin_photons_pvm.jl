@@ -9,7 +9,7 @@
 using CSV, LinearAlgebra, QuantumMeasurements
 
 # We then read the [experimental data](@__REPO_ROOT_URL__/examples/counts.csv), 
-# which is located at the [`examples`](@__REPO_ROOT_URL__/examples) directory of the repository.
+# which is located in the [`examples`](@__REPO_ROOT_URL__/examples) directory of the repository.
 
 dir = pkgdir(QuantumMeasurements);
 path = joinpath(dir, "examples", "counts.csv");
@@ -22,21 +22,21 @@ parse_c(s) = parse(ComplexF32, s);
 
 # The outcomes are contained in row 4, and we normalize to get frequencies
 outcomes = [Float32(parse_c(row[4])) for row in file]
-freqs = normalize(outcomes, 1)
+freqs = normalize(outcomes, 1);
 
 # These are the coefficients defining the measurement, which are coincidence counts after the beam gets 
 # projected into a pair of polarization states
 
-# These vectors defines the polarization projector for each of the two detectors
+# These vectors define the polarization projector for each of the two detectors
 ψ1 = [[parse_c(row[5]), parse_c(row[6])] for row ∈ file]
-ψ2 = [[parse_c(row[7]), parse_c(row[8])] for row ∈ file]
+ψ2 = [[parse_c(row[7]), parse_c(row[8])] for row ∈ file];
 
-# We now assemble the projectors on the two photon state using [`kron`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#Base.kron).
-# We divide by 3 to ensure that the sum of the pvm projectors is the identity matrix.
-pvm = [kron(pair...) / 3 for pair in zip(ψ1, ψ2)]
+# We now assemble the projectors on the two-photon state using [`kron`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#Base.kron).
+# We divide by 3 to ensure that the sum of the PVM projectors is the identity matrix.
+pvm = [kron(pair...) / 3 for pair in zip(ψ1, ψ2)];
 
 # The measurement matrix is assembled:
-μ = assemble_measurement_matrix(pvm)
+μ = assemble_measurement_matrix(pvm);
 
 # Finally, we choose the [`MaximumLikelihood`](@ref) method and make our estimation:
 method = MaximumLikelihood()

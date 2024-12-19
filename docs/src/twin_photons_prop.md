@@ -2,7 +2,7 @@
 EditURL = "../../examples/twin_photons_prop.jl"
 ```
 
-# Twin fotons with proportional measurement
+# Twin photons with proportional measurement
 
 In this example, we perform a similar tomography as in [Twin Photons](@ref).
 The difference is that, now, the measurement performed is not a PVM.
@@ -22,7 +22,7 @@ l = polarization_state(:L);
 nothing #hide
 ````
 
-The main difference arrises here, in the specification of our measurement:
+The main difference arises here, in the specification of our measurement:
 
 ````@example twin_photons_prop
 projectors = [kron(h, h),
@@ -40,7 +40,8 @@ projectors = [kron(h, h),
     kron(v, d),
     kron(v, l),
     kron(h, l),
-    kron(r, l),]
+    kron(r, l),];
+nothing #hide
 ````
 
 Notice that the sum of the corresponding projectors is not even proportional to the identity matrix:
@@ -51,16 +52,17 @@ sum(x -> x * x', projectors)
 
 Therefore, this measurement is not a PVM/POVM.
 
-As discussed in [PhysRevA.64.052312](@cite), this occured because of experimental ease:
+As discussed in [PhysRevA.64.052312](@cite), this occurred because of experimental ease:
 This measurement only contains 16 settings (the minimum amount), as opposed to the
 36 settings present in the [Twin Photons](@ref) example.
 Notice, also, that only one of the polarization states changes between each successive measurement,
-so that only one set of wave plates need to be adjusted.
+so that only one set of wave plates needs to be adjusted.
 
 To deal with this kind of situation, we can build a [`ProportionalMeasurement`](@ref):
 
 ````@example twin_photons_prop
-μ = ProportionalMeasurement(projectors)
+μ = ProportionalMeasurement(projectors);
+nothing #hide
 ````
 
 The theory behind this is better explained at [Proportional Measurements](@ref prop_meas).

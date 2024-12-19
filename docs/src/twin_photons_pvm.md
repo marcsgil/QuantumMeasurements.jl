@@ -15,7 +15,7 @@ using CSV, LinearAlgebra, QuantumMeasurements
 ````
 
 We then read the [experimental data](https://github.com/marcsgil/QuantumMeasurements.jl/tree/master/examples/counts.csv),
-which is located at the [`examples`](https://github.com/marcsgil/QuantumMeasurements.jl/tree/master/examples) directory of the repository.
+which is located in the [`examples`](https://github.com/marcsgil/QuantumMeasurements.jl/tree/master/examples) directory of the repository.
 
 ````@example twin_photons_pvm
 dir = pkgdir(QuantumMeasurements);
@@ -37,30 +37,34 @@ The outcomes are contained in row 4, and we normalize to get frequencies
 
 ````@example twin_photons_pvm
 outcomes = [Float32(parse_c(row[4])) for row in file]
-freqs = normalize(outcomes, 1)
+freqs = normalize(outcomes, 1);
+nothing #hide
 ````
 
 These are the coefficients defining the measurement, which are coincidence counts after the beam gets
 projected into a pair of polarization states
 
-These vectors defines the polarization projector for each of the two detectors
+These vectors define the polarization projector for each of the two detectors
 
 ````@example twin_photons_pvm
 ψ1 = [[parse_c(row[5]), parse_c(row[6])] for row ∈ file]
-ψ2 = [[parse_c(row[7]), parse_c(row[8])] for row ∈ file]
+ψ2 = [[parse_c(row[7]), parse_c(row[8])] for row ∈ file];
+nothing #hide
 ````
 
-We now assemble the projectors on the two photon state using [`kron`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#Base.kron).
-We divide by 3 to ensure that the sum of the pvm projectors is the identity matrix.
+We now assemble the projectors on the two-photon state using [`kron`](https://docs.julialang.org/en/v1/stdlib/LinearAlgebra/#Base.kron).
+We divide by 3 to ensure that the sum of the PVM projectors is the identity matrix.
 
 ````@example twin_photons_pvm
-pvm = [kron(pair...) / 3 for pair in zip(ψ1, ψ2)]
+pvm = [kron(pair...) / 3 for pair in zip(ψ1, ψ2)];
+nothing #hide
 ````
 
 The measurement matrix is assembled:
 
 ````@example twin_photons_pvm
-μ = assemble_measurement_matrix(pvm)
+μ = assemble_measurement_matrix(pvm);
+nothing #hide
 ````
 
 Finally, we choose the [`MaximumLikelihood`](@ref) method and make our estimation:

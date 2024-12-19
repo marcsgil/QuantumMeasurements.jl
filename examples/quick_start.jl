@@ -1,7 +1,7 @@
 # # Quick start
 
 # In this tutorial, we will lay down the first steps necessary to perform quantum state tomography. 
-# We will learn how to specify what measurement was made, how to represent the experimental results and, 
+# We will learn how to specify what measurement was made, how to represent the experimental results, and 
 # finally, how to actually get an estimation of the density operator that produced such experimental results. 
 # As an example, we will perform the tomography of the polarization state of a single photon.
 
@@ -12,12 +12,12 @@ using QuantumMeasurements
 
 # We now need to specify the polarization basis in which the measurements are performed. 
 # In this case, we have chosen the horizontal (H), vertical (V), diagonal (D), anti-diagonal (A), 
-# right circular (R) and left circular (L) polarization states. This is run by calling
+# right circular (R), and left circular (L) polarization states. This is run by calling
 
 measurement_basis = [polarization_state(s) / √3 for s ∈ (:H, :V, :D, :A, :R, :L)]
 
 # The [`polarization_state`](@ref) function returns the polarization state corresponding to the symbol `s`. 
-# These are simply two dimensional complex vectors representing the polarization states. 
+# These are simply two-dimensional complex vectors representing the polarization states. 
 # We normalize these states by a factor of `√3` to ensure that our set forms a Projective Valued Measure (PVM). 
 # For more information on this, check the [Mathematical Foundations](@ref mat_fond) section of the documentation.
 
