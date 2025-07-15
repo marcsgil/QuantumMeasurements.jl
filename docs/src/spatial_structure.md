@@ -41,7 +41,7 @@ We can now create a random superposition of these two modes.
 visualize(abs2.(ψ))
 ````
 
-What we want to do is recover the coefficients `ψs` from intensity measurements.
+What we want to do is recover the coefficients `ψs` from the image.
 We show now that this is equivalent to quantum state tomography.
 
 ## Theory
