@@ -4,7 +4,7 @@ abstract type AbstractLinearInversion end
     LinearInversion <: AbstractLinearInversion
 
 A type representing a linear inversion method for estimating the state of a quantum system.
-The equations are solved by a QR decomposition (`\` operator).
+The equations are solved by a QR decomposition (`\\` operator).
 """
 struct LinearInversion <: AbstractLinearInversion end
 

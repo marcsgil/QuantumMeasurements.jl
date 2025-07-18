@@ -56,7 +56,16 @@ BayesianInference
 GellMannMatrices
 ```
 
-## Random
+## Vectorization
+
+```@docs
+traceless_vectorization
+traceless_vectorization!
+density_matrix_reconstruction
+density_matrix_reconstruction!
+```
+
+## Generation of Random States
 
 ```@autodocs
 Modules = [QuantumMeasurements]

@@ -13,7 +13,7 @@ the generation of the structured light patterns, as well as
 [CairoMakie.jl](https://github.com/MakieOrg/Makie.jl) for plotting.
 
 ````@example spatial_structure
-using QuantumMeasurements, StructuredLight, CairoMakie, Random
+using QuantumMeasurements, LinearAlgebra, StructuredLight, CairoMakie, Random
 Random.seed!(1234);
 nothing #hide
 ````
@@ -36,9 +36,11 @@ We can now create a random superposition of these two modes.
 
 ````@example spatial_structure
 ψs = randn(ComplexF64, 2)
-ψs /= √sum(abs2, ψs)
+normalize!(ψs)
 ψ = ψs[1] * ϕ₁ + ψs[2] * ϕ₂
-visualize(abs2.(ψ))
+probs = abs2.(ψ)
+normalize!(probs, 1)
+visualize(probs)
 ````
 
 What we want to do is recover the coefficients `ψs` from the image.
@@ -49,7 +51,7 @@ We show now that this is equivalent to quantum state tomography.
 We first notice that the modes are normalized, i.e., $\int |\psi|^2 dA = 1$:
 
 ````@example spatial_structure
-δA = (rs[2] - rs[1])^2
+δA = step(rs)^2
 
 isapprox(sum(abs2, ϕ₁) * δA, 1, atol=1e-5) &&
 isapprox(sum(abs2, ϕ₂) * δA, 1, atol=1e-5) &&
@@ -86,13 +88,13 @@ Finally, the measurements are simply the (normalized) intensity.
 
 ````@example spatial_structure
 method = LinearInversion()
-ρ = estimate_state(abs2.(ψ) * δA, μ, method)[1]
+ρ = estimate_state(probs, μ, method)[1]
 ````
 
 We can now compare the estimated state with the true state.
 
 ````@example spatial_structure
-fidelity(ρ, ψs)
+fidelity(ρ, ψs) ≈ 1
 ````
 
 We see that the fidelity is close to 1, meaning that we have successfully recovered the state.

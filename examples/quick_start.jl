@@ -19,7 +19,7 @@ measurement_basis = [polarization_state(s) / √3 for s ∈ (:H, :V, :D, :A, :R,
 # The [`polarization_state`](@ref) function returns the polarization state corresponding to the symbol `s`. 
 # These are simply two-dimensional complex vectors representing the polarization states. 
 # We normalize these states by a factor of `√3` to ensure that our set forms a Projective Valued Measure (PVM). 
-# For more information on this, check the [Mathematical Foundations](@ref mat_fond) section of the documentation.
+# For more information on this, check the [Mathematical Foundations](@ref) section of the documentation.
 
 # We then assemble a measurement matrix corresponding to this basis by calling [`assemble_measurement_matrix`](@ref):
 μ = assemble_measurement_matrix(measurement_basis)

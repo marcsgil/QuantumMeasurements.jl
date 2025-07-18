@@ -24,6 +24,7 @@ makedocs(;
             "obstructed_spatial_structure.md", "spin_orbit_modes.md"],
         "Explanations" => ["mathematical_foundations.md", "proportional_measurements.md"],
         "API" => "api.md",
+        "References" => "references.md",
     ],
     warnonly=true,
     plugins=[bib],

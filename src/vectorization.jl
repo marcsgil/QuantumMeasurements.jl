@@ -27,7 +27,7 @@ end
 """
     traceless_vectorization!(θ, A)
 
-Vectorize the traceless part of `A` into a vector `θ` of length `dim(A)^2 - 1`.
+Same as [`traceless_vectorization`](@ref), but stores the result in `θ`.
 """
 function traceless_vectorization!(θ, A)
     dim = check_traceless_compat(θ, A)
@@ -63,6 +63,13 @@ LinearAlgebra.tr(p::Projector) = sum(abs2, p.ψ)
 
 traceless_vectorization!(θ, ψ::AbstractVector) = traceless_vectorization!(θ, Projector(ψ))
 
+"""
+    traceless_vectorization(A)
+
+Returns a vector `θ` containing the projections of `A` onto the [`GellMannMatrices`](@ref). 
+`A` can be a matrix or a vector. In the latter case, it is treated as a projector.
+The vector `θ` has length `dim^2 - 1`, where `dim` is the dimension of `A`.
+"""
 function traceless_vectorization(A)
     θ = Vector{real(eltype(A))}(undef, size(A, 1)^2 - 1)
     traceless_vectorization!(θ, A)
@@ -128,7 +135,7 @@ end
 """
     density_matrix_reconstruction!(ρ, θ)
 
-Reconstruct a density matrix from the vector `θ` and stores the result in `ρ`.
+Same as [`density_matrix_reconstruction`](@ref), but stores the result in `ρ`.
 """
 function density_matrix_reconstruction!(ρ, θ)
     traceless_reconstruction!(ρ, θ)
@@ -142,7 +149,7 @@ end
 """
     density_matrix_reconstruction(θ)
 
-Reconstruct a density matrix from the vector `θ`.
+Returns the density matrix corresponding to the Bloch vector `θ`.
 """
 function density_matrix_reconstruction(θ)
     dims = check_traceless_compat(θ)
