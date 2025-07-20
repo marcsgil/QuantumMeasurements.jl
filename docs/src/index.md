@@ -38,11 +38,11 @@ Complete technical reference:
 
 ## Installation
 
-QuantumMeasurements.jl is registered in the Julia General Registry. Install it using:
+QuantumMeasurements.jl is not registered in the Julia General Registry (someone has already taken the name). Nonetheless, it can be easily installed using:
 
 ```julia
 using Pkg
-Pkg.add("QuantumMeasurements")
+Pkg.add("https://github.com/marcsgil/QuantumMeasurements.jl")
 ```
 
 ## Supported Julia Versions
