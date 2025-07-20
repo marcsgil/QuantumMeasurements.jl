@@ -1,7 +1,7 @@
 name = "QuantumMeasurements"
 uuid = "5d8d2b8f-00a2-4aa7-ae68-34a984b4e8b6"
 authors = ["Marcos Gil <marcosgildeoliveira@gmail.com>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
