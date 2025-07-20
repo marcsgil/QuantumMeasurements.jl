@@ -42,7 +42,7 @@ QuantumMeasurements.jl is not registered in the Julia General Registry (someone 
 
 ```julia
 using Pkg
-Pkg.add("https://github.com/marcsgil/QuantumMeasurements.jl")
+Pkg.add(url="https://github.com/marcsgil/QuantumMeasurements.jl")
 ```
 
 ## Supported Julia Versions

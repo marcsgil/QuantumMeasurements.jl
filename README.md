@@ -23,7 +23,7 @@ QuantumMeasurements.jl provides a complete toolkit for reconstructing quantum st
 
 ```julia
 using Pkg
-Pkg.add("https://github.com/marcsgil/QuantumMeasurements.jl")
+Pkg.add(url="https://github.com/marcsgil/QuantumMeasurements.jl")
 ```
 
 ### Basic Usage
