@@ -7,9 +7,9 @@ Welcome to the documentation for **QuantumMeasurements.jl**, a comprehensive Jul
 QuantumMeasurements.jl reconstructs quantum states from experimental measurement data using statistically rigorous methods.
 
 **Key Capabilities:**
-- **Multiple estimation algorithms** from fast linear methods to full Bayesian inference
-- **Flexible measurement handling** including incomplete and obstructed measurements
-- **Uncertainty quantification** with proper error bars and confidence intervals
+- **Multiple estimation algorithms** from fast linear methods to full Bayesian inference.
+- **Flexible measurement handling** including incomplete and obstructed measurements.
+- **Uncertainty quantification** with proper error bars and confidence intervals.
 
 ## Quick Navigation
 
