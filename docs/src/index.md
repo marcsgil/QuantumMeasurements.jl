@@ -17,7 +17,7 @@ QuantumMeasurements.jl reconstructs quantum states from experimental measurement
 New to quantum state tomography or the package? Start here:
 - **[Installation](#installation)**: Get the package running
 - **[Quick Start Guide](quick_start.md)**: Basic polarization tomography example
-- **[Examples](examples/twin_photons_pvm.md)**: Practical applications
+- **[Examples](twin_photons_pvm.md)**: Practical applications
 
 ### 📚 **Theory and Methods**  
 Understand the mathematics and choose the right approach:
@@ -51,6 +51,6 @@ This package supports Julia 1.10 and later versions.
 
 ## First Steps
 
-Once installed, try the [Quick Start Guide](quick_start.md) for a hands-on introduction, or explore the [Examples](examples/twin_photons_pvm.md) to see the package in action with real experimental scenarios.
+Once installed, try the [Quick Start Guide](quick_start.md) for a hands-on introduction, or explore the [Examples](twin_photons_pvm.md) to see the package in action with real experimental scenarios.
 
 For questions about which method to use for your specific application, the [Choosing Estimation Methods](choosing_methods.md) guide provides practical decision-making guidance.
