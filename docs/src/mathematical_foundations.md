@@ -54,7 +54,7 @@ We can specify any state $\rho$ by a list of real coefficients $\boldsymbol{\the
 
 where $\omega_n$ denotes one of the generalized Gell-Mann matrices. The vector $\boldsymbol{\theta}$ is called the generalized Bloch vector. The Bloch vector can be calculated from the matrix $\rho$ using the function [`traceless_vectorization`](@ref). Reciprocally, the density matrix can be reconstructed from the Bloch vector using [`density_matrix_reconstruction`](@ref).
 
-## Linear Inversion estimator
+## [Linear Inversion estimator](@id linear_inversion)
 
 By applying $\mathrm{Tr} (\Pi_m \bullet)$ to both sides of equation (1), we arrive at the linear system:
 
@@ -153,20 +153,20 @@ The choice between these variants depends on the specific use case:
 - Use **PreAllocatedLinearInversion** when performing many estimations with the same measurement setup
 - Use **NormalEquations** when dealing with highly redundant measurements where $M \gg d^2-1$
 
-### Maximum Likelihood Estimator
+## Advanced Estimation Methods
 
-For situations with limited observations (e.g., photocount regime), the maximum likelihood estimator is more appropriate:
+Beyond linear inversion, the package provides advanced methods for challenging experimental scenarios:
 
-```math
-\hat{\rho}_{ML} = \arg\max \mathcal{L}(N_1, \ldots, N_M | \rho)
-```
+- **[Maximum Likelihood Estimation](@ref)**: Optimal for low photon count experiments and single-photon tomography. Handles Poisson statistics correctly and always produces physical states.
 
-where the likelihood function is:
+- **[Bayesian Inference](@ref)**: Provides full uncertainty quantification through posterior distributions. Computationally intensive but optimal for scenarios requiring error bars and handling of prior knowledge.
 
-```math
-\mathcal{L}(N_1, \ldots, N_M | \rho) = \prod_{m=1}^M \left[\mathrm{Tr} \left(\Pi_m \rho \right)\right]^{N_m}
-```
+For guidance on selecting the appropriate method for your experimental conditions, see [Choosing Estimation Methods](@ref).
 
-This estimator ensures that the output is always a valid density operator and is more robust for small sample sizes.
+## See Also
 
-### Bayesian Inference
+- [Maximum Likelihood Estimation](@ref): Advanced method for low photon counts
+- [Bayesian Inference](@ref): Full posterior estimation with uncertainty quantification  
+- [Proportional Measurements](@ref prop_meas): Handling incomplete measurements
+- [Random States](@ref random_states): Generating test data for validation
+- [Choosing Estimation Methods](@ref): Practical guide for method selection
